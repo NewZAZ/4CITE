@@ -1,0 +1,890 @@
+openapi: 3.0.3
+info:
+  title: Akkor Hotel API
+  description: |
+    RESTful API documentation for the Akkor Hotel booking platform.
+
+    This API uses session-based authentication via cookies. Mutation endpoints (POST, PUT, DELETE)
+    accept both `application/json` and `application/x-www-form-urlencoded` request bodies.
+
+    **Roles:**
+    - `user` — Standard authenticated user. Can manage own bookings and profile.
+    - `employee` — Hotel staff with read access to user data.
+    - `admin` — Full administrative access (CRUD on hotels, users, all bookings).
+
+    **Authentication flow:**
+    1. `POST /login` with email & password → sets session cookie
+    2. Include the session cookie in subsequent requests
+    3. `POST /logout` to end the session
+  version: 1.0.0
+  contact:
+    name: Akkor Hotel Team
+
+servers:
+  - url: http://localhost:3333
+    description: Local development server
+
+tags:
+  - name: Auth
+    description: Authentication — login, register, and logout
+  - name: Hotels
+    description: Hotel CRUD — browse, create, update, and delete hotels
+  - name: Bookings
+    description: Booking CRUD — create, view, update, and cancel reservations
+  - name: Users
+    description: User management — profiles, updates, and account deletion
+
+paths:
+  # ──────────────────────────────────────────────
+  # Auth
+  # ──────────────────────────────────────────────
+  /login:
+    post:
+      tags: [Auth]
+      summary: Login
+      description: Authenticates a user with email and password. Sets a session cookie on success.
+      operationId: auth.login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@akkor.com
+                password:
+                  type: string
+                  format: password
+                  example: password123
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '302':
+          description: Redirect to home page on success
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /
+            Set-Cookie:
+              schema:
+                type: string
+                description: Session cookie
+        '422':
+          description: Validation error or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      description: Creates a new user account with role `user`. No authentication required.
+      operationId: auth.register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pseudo, email, password]
+              properties:
+                pseudo:
+                  type: string
+                  minLength: 3
+                  maxLength: 255
+                  example: johndoe
+                email:
+                  type: string
+                  format: email
+                  example: john@example.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  maxLength: 255
+                  example: secret1234
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [pseudo, email, password]
+              properties:
+                pseudo:
+                  type: string
+                  minLength: 3
+                  maxLength: 255
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  maxLength: 255
+      responses:
+        '302':
+          description: Redirect to home page on success
+        '422':
+          description: Validation error (e.g., email already taken)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /logout:
+    post:
+      tags: [Auth]
+      summary: Logout
+      description: Ends the current session and clears the session cookie.
+      operationId: auth.logout
+      security:
+        - sessionAuth: []
+      responses:
+        '302':
+          description: Redirect to home page
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ──────────────────────────────────────────────
+  # Hotels
+  # ──────────────────────────────────────────────
+  /hotels:
+    get:
+      tags: [Hotels]
+      summary: List hotels
+      description: |
+        Returns a paginated list of hotels. **Publicly accessible** (no auth required).
+        Supports searching by name/location, sorting, and configurable page size.
+      operationId: hotels.index
+      parameters:
+        - name: search
+          in: query
+          description: Filter hotels by name or location (case-insensitive partial match)
+          schema:
+            type: string
+            example: Paris
+        - name: sort
+          in: query
+          description: Field to sort by
+          schema:
+            type: string
+            enum: [name, location, created_at]
+            default: created_at
+        - name: order
+          in: query
+          description: Sort direction
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        '200':
+          description: Paginated list of hotels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Hotel'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+    post:
+      tags: [Hotels]
+      summary: Create a hotel
+      description: Creates a new hotel. **Admin only.**
+      operationId: hotels.store
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHotelInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateHotelInput'
+      responses:
+        '302':
+          description: Redirect to hotels list on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /hotels/{id}:
+    get:
+      tags: [Hotels]
+      summary: Get hotel details
+      description: Returns a single hotel by ID. **Publicly accessible.**
+      operationId: hotels.show
+      parameters:
+        - $ref: '#/components/parameters/HotelId'
+      responses:
+        '200':
+          description: Hotel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hotel'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Hotels]
+      summary: Update a hotel
+      description: Updates an existing hotel. **Admin only.** All fields are optional.
+      operationId: hotels.update
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/HotelId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHotelInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateHotelInput'
+      responses:
+        '302':
+          description: Redirect to hotel detail page on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+    delete:
+      tags: [Hotels]
+      summary: Delete a hotel
+      description: Permanently deletes a hotel and all its associated bookings. **Admin only.**
+      operationId: hotels.destroy
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/HotelId'
+      responses:
+        '302':
+          description: Redirect to hotels list on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ──────────────────────────────────────────────
+  # Bookings
+  # ──────────────────────────────────────────────
+  /bookings:
+    get:
+      tags: [Bookings]
+      summary: List bookings
+      description: |
+        Returns a paginated list of bookings. Requires authentication.
+        - **Regular users** see only their own bookings.
+        - **Admins** see all bookings and can search by booking ID, user pseudo, or email.
+      operationId: bookings.index
+      security:
+        - sessionAuth: []
+      parameters:
+        - name: search
+          in: query
+          description: |
+            Search query (admin only). If numeric, searches by booking ID.
+            Otherwise searches by user pseudo or email.
+          schema:
+            type: string
+            example: john
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: Items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        '200':
+          description: Paginated list of bookings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Booking'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags: [Bookings]
+      summary: Create a booking
+      description: Creates a new booking for the authenticated user. Check-in must be in the future, check-out must be after check-in.
+      operationId: bookings.store
+      security:
+        - sessionAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateBookingInput'
+      responses:
+        '302':
+          description: Redirect to bookings list on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /bookings/{id}:
+    put:
+      tags: [Bookings]
+      summary: Update a booking
+      description: Updates an existing booking. Users can update their own bookings; admins can update any booking. All fields are optional.
+      operationId: bookings.update
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/BookingId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBookingInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateBookingInput'
+      responses:
+        '302':
+          description: Redirect to bookings list on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+    delete:
+      tags: [Bookings]
+      summary: Delete a booking
+      description: Permanently deletes a booking. Users can delete their own bookings; admins can delete any booking.
+      operationId: bookings.destroy
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/BookingId'
+      responses:
+        '302':
+          description: Redirect to bookings list on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ──────────────────────────────────────────────
+  # Users
+  # ──────────────────────────────────────────────
+  /users:
+    get:
+      tags: [Users]
+      summary: List all users
+      description: Returns a list of all registered users. **Admin or employee only.**
+      operationId: users.index
+      security:
+        - sessionAuth: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user profile
+      description: |
+        Returns a user's profile with recent bookings.
+        - Users can view their own profile.
+        - Admins and employees can view any user's profile.
+      operationId: users.show
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: User profile with recent bookings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  targetUser:
+                    $ref: '#/components/schemas/User'
+                  recentBookings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Booking'
+                  totalBookings:
+                    type: integer
+                    example: 12
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Users]
+      summary: Update a user
+      description: |
+        Updates a user's profile. All fields are optional.
+        - Users can update their own profile.
+        - Admins can update any user.
+      operationId: users.update
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserInput'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateUserInput'
+      responses:
+        '302':
+          description: Redirect to user profile on success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          description: Validation error (e.g., email already taken)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+    delete:
+      tags: [Users]
+      summary: Delete a user
+      description: |
+        Permanently deletes a user account and all associated data.
+        - Users can delete their own account (auto-logout).
+        - Admins can delete any user.
+      operationId: users.destroy
+      security:
+        - sessionAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '302':
+          description: Redirect to home (own account) or users list (admin)
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# ════════════════════════════════════════════════
+# Components
+# ════════════════════════════════════════════════
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: adonis-session
+      description: Session-based authentication. Obtained via `POST /login`.
+
+  parameters:
+    HotelId:
+      name: id
+      in: path
+      required: true
+      description: Hotel ID
+      schema:
+        type: integer
+        example: 1
+    BookingId:
+      name: id
+      in: path
+      required: true
+      description: Booking ID
+      schema:
+        type: integer
+        example: 1
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: User ID
+      schema:
+        type: integer
+        example: 1
+
+  responses:
+    Unauthorized:
+      description: Not authenticated — login required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Unauthorized access
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Access denied
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Resource not found
+
+  schemas:
+    # ── Resource schemas ─────────────────────────
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        pseudo:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        role:
+          type: string
+          enum: [user, admin, employee]
+          example: user
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-15T10:30:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2026-01-16T08:00:00.000Z'
+
+    Hotel:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Grand Hotel Paris
+        location:
+          type: string
+          example: Paris, France
+        description:
+          type: string
+          example: A luxurious hotel in the heart of Paris with stunning views of the Eiffel Tower.
+        pictureList:
+          type: array
+          nullable: true
+          items:
+            type: string
+            format: uri
+          example:
+            - https://example.com/photos/hotel1-front.jpg
+            - https://example.com/photos/hotel1-lobby.jpg
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-10T14:00:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        userId:
+          type: integer
+          example: 1
+        hotelId:
+          type: integer
+          example: 1
+        checkIn:
+          type: string
+          format: date
+          example: '2026-03-01'
+        checkOut:
+          type: string
+          format: date
+          example: '2026-03-05'
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+          example: pending
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-02-20T12:00:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        user:
+          $ref: '#/components/schemas/User'
+        hotel:
+          $ref: '#/components/schemas/Hotel'
+
+    PaginationMeta:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total number of records
+          example: 42
+        perPage:
+          type: integer
+          description: Records per page
+          example: 10
+        currentPage:
+          type: integer
+          example: 1
+        lastPage:
+          type: integer
+          example: 5
+        firstPage:
+          type: integer
+          example: 1
+
+    # ── Input schemas ────────────────────────────
+    CreateHotelInput:
+      type: object
+      required: [name, location, description]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: Grand Hotel Paris
+        location:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: Paris, France
+        description:
+          type: string
+          minLength: 1
+          example: A luxurious hotel in the heart of Paris.
+        pictureList:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - https://example.com/photos/hotel1.jpg
+
+    UpdateHotelInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        location:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          minLength: 1
+        pictureList:
+          type: array
+          items:
+            type: string
+            format: uri
+
+    CreateBookingInput:
+      type: object
+      required: [hotelId, checkIn, checkOut]
+      properties:
+        hotelId:
+          type: integer
+          minimum: 1
+          example: 1
+        checkIn:
+          type: string
+          format: date
+          description: 'Check-in date (YYYY-MM-DD, must be in the future)'
+          example: '2026-03-01'
+        checkOut:
+          type: string
+          format: date
+          description: 'Check-out date (YYYY-MM-DD, must be after check-in)'
+          example: '2026-03-05'
+
+    UpdateBookingInput:
+      type: object
+      properties:
+        checkIn:
+          type: string
+          format: date
+          example: '2026-03-02'
+        checkOut:
+          type: string
+          format: date
+          example: '2026-03-06'
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+          example: confirmed
+
+    UpdateUserInput:
+      type: object
+      properties:
+        pseudo:
+          type: string
+          minLength: 3
+          maxLength: 255
+          example: newpseudo
+        email:
+          type: string
+          format: email
+          example: newemail@example.com
+        password:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 255
+          description: Leave empty to keep current password
+          example: newpassword123
+
+    # ── Error schemas ────────────────────────────
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized access
+
+    ValidationError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The email field must be a valid email address
+              rule:
+                type: string
+                example: email
+              field:
+                type: string
+                example: email

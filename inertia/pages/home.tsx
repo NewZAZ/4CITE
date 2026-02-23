@@ -1,346 +1,395 @@
-import { Head } from '@inertiajs/react'
+import { Head, Link, usePage } from '@inertiajs/react'
+import Layout from '~/components/layout'
+import type { SharedProps } from '@adonisjs/inertia/types'
+
+const destinations = [
+  {
+    city: 'Paris',
+    country: 'France',
+    gradient: 'linear-gradient(135deg, #2c1810 0%, #4a2c2a 30%, #6b3a3a 60%, #3d2b1f 100%)',
+  },
+  {
+    city: 'Dubai',
+    country: 'United Arab Emirates',
+    gradient: 'linear-gradient(135deg, #4a3520 0%, #b5924c 30%, #c9a85e 60%, #6b4f28 100%)',
+  },
+  {
+    city: 'Tokyo',
+    country: 'Japan',
+    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 30%, #3a3a5c 60%, #16213e 100%)',
+  },
+  {
+    city: 'New York',
+    country: 'United States',
+    gradient: 'linear-gradient(135deg, #1c1917 0%, #292524 30%, #44403c 60%, #1c1917 100%)',
+  },
+  {
+    city: 'Santorini',
+    country: 'Greece',
+    gradient: 'linear-gradient(135deg, #1a3a4a 0%, #2a5a6a 30%, #4a8a9a 60%, #1a3a5a 100%)',
+  },
+  {
+    city: 'Marrakech',
+    country: 'Morocco',
+    gradient: 'linear-gradient(135deg, #5c2e0e 0%, #8b4513 30%, #cd853f 60%, #6b3a1f 100%)',
+  },
+]
+
+const steps = [
+  {
+    title: 'Search & Discover',
+    description:
+      'Browse our curated collection of luxury hotels worldwide. Filter by destination, amenities, and style to find your perfect match.',
+    icon: (
+      <svg className="w-7 h-7 text-charcoal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Book Instantly',
+    description:
+      'Select your dates, choose your room, and confirm your reservation in just a few clicks. Secure booking with instant confirmation.',
+    icon: (
+      <svg className="w-7 h-7 text-charcoal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+        <path d="m9 16 2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Enjoy Your Stay',
+    description:
+      'Arrive to a world-class experience. From concierge services to bespoke amenities, every detail is crafted for your comfort.',
+    icon: (
+      <svg className="w-7 h-7 text-charcoal" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg>
+    ),
+  },
+]
+
+const testimonials = [
+  {
+    quote:
+      'An absolutely unforgettable experience. The attention to detail at every touchpoint made our anniversary trip truly special. We will be returning.',
+    name: 'Alexandra M.',
+    rating: 5,
+  },
+  {
+    quote:
+      'From the seamless booking process to the impeccable service on-site, Akkor Hotel exceeded every expectation. The concierge recommendations were spot on.',
+    name: 'James & Sarah T.',
+    rating: 5,
+  },
+  {
+    quote:
+      'I travel extensively for business and Akkor has become my go-to platform. The consistency of quality across their properties is remarkable.',
+    name: 'David K.',
+    rating: 5,
+  },
+]
+
+function StarIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+    </svg>
+  )
+}
 
 export default function Home() {
+  const { user } = usePage<SharedProps>().props
+
   return (
-    <>
-      <Head title="Homepage" />
+    <Layout>
+      <Head title="Luxury Hotel Booking | Akkor Hotel" />
 
-      <div className="fixed xl:absolute left-8 right-8 top-0 bottom-0 xl:inset-0 max-w-screen-xl mx-auto before:content-[''] before:[background:repeating-linear-gradient(0deg,var(--sand-5)_0_4px,transparent_0_8px)] before:absolute before:top-0 before:left-0 before:h-full before:w-px after:content-[''] after:[background:repeating-linear-gradient(0deg,var(--sand-5)_0_4px,transparent_0_8px)] after:absolute after:top-0 after:right-0 after:h-full after:w-px"></div>
+      {/* ================================================================ */}
+      {/* HERO SECTION                                                     */}
+      {/* ================================================================ */}
+      <section className="hero-gradient -mx-4 sm:-mx-6 lg:-mx-8 -mt-10 px-4 sm:px-6 lg:px-8 py-28 md:py-36 relative overflow-hidden">
+        {/* Decorative art-deco SVG patterns */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Top-left corner geometric */}
+          <svg className="absolute top-0 left-0 w-64 h-64 opacity-[0.04]" viewBox="0 0 200 200" fill="none">
+            <rect x="20" y="20" width="160" height="160" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <rect x="40" y="40" width="120" height="120" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <rect x="60" y="60" width="80" height="80" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="20" y1="20" x2="60" y2="60" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="180" y1="20" x2="140" y2="60" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="20" y1="180" x2="60" y2="140" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="180" y1="180" x2="140" y2="140" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+          </svg>
 
-      <div className="pt-4 h-full flex flex-col">
-        {/* Header */}
-        <div className="grow pb-4 bg-gradient-to-b from-sand-1 to-sand-2 flex justify-center items-center">
-          <a href="https://adonisjs.com" target="_blank" className="isolate">
-            <svg className="w-16 h-16 fill-primary" viewBox="0 0 33 33">
-              <path
-                fillRule="evenodd"
-                d="M0 16.333c0 13.173 3.16 16.333 16.333 16.333 13.173 0 16.333-3.16 16.333-16.333C32.666 3.16 29.506 0 16.333 0 3.16 0 0 3.16 0 16.333Zm6.586 3.393L11.71 8.083c.865-1.962 2.528-3.027 4.624-3.027 2.096 0 3.759 1.065 4.624 3.027l5.123 11.643c.233.566.432 1.297.432 1.93 0 2.893-2.029 4.923-4.923 4.923-.986 0-1.769-.252-2.561-.506-.812-.261-1.634-.526-2.695-.526-1.048 0-1.89.267-2.718.529-.801.253-1.59.503-2.538.503-2.894 0-4.923-2.03-4.923-4.924 0-.632.2-1.363.432-1.929Zm9.747-9.613-5.056 11.443c1.497-.699 3.227-1.032 5.056-1.032 1.763 0 3.56.333 4.99 1.032l-4.99-11.444Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </a>
+          {/* Bottom-right corner geometric */}
+          <svg className="absolute bottom-0 right-0 w-72 h-72 opacity-[0.04]" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="90" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <circle cx="100" cy="100" r="70" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <circle cx="100" cy="100" r="50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="100" y1="10" x2="100" y2="190" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="10" y1="100" x2="190" y2="100" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="30" y1="30" x2="170" y2="170" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <line x1="170" y1="30" x2="30" y2="170" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+          </svg>
+
+          {/* Top-right fan motif */}
+          <svg className="absolute -top-10 right-1/4 w-48 h-48 opacity-[0.03]" viewBox="0 0 200 200" fill="none">
+            <path d="M100 200 L100 0" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 L40 10" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 L160 10" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 L10 60" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 L190 60" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 L0 120" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 L200 120" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <path d="M100 200 Q100 100 40 10" stroke="currentColor" strokeWidth="0.3" className="text-brass-light" />
+            <path d="M100 200 Q100 100 160 10" stroke="currentColor" strokeWidth="0.3" className="text-brass-light" />
+          </svg>
+
+          {/* Bottom-left diamond pattern */}
+          <svg className="absolute bottom-10 left-10 w-40 h-40 opacity-[0.03]" viewBox="0 0 100 100" fill="none">
+            <polygon points="50,5 95,50 50,95 5,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <polygon points="50,20 80,50 50,80 20,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <polygon points="50,35 65,50 50,65 35,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+          </svg>
         </div>
 
-        {/* Bento with documentation, Adocasts, packages and Discord */}
-        <div className="isolate mt-10 max-w-screen-xl mx-auto px-16 xl:px-8 grid grid-cols-1 xl:grid-cols-2 xl:grid-rows-3 gap-8">
-          <article className="row-span-3 relative p-6 shadow-sm hover:shadow border border-sand-7 hover:border-sand-8 rounded-2xl transition ease-in-out duration-700 group flex flex-col gap-8">
-            <div className="relative opacity-80">
-              <svg fill="none" viewBox="0 0 240 105">
-                <path fill="#F9F9F8" d="M0 4a4 4 0 0 1 4-4h232a4 4 0 0 1 4 4v101H0V4Z" />
-                <g fill="#000" fillRule="evenodd" clipPath="url(#a)" clipRule="evenodd">
-                  <path d="M24 11.444c0 4.391 1.053 5.445 5.444 5.445s5.445-1.054 5.445-5.445c0-4.39-1.054-5.444-5.445-5.444C25.054 6 24 7.053 24 11.444Zm2.195 1.131 1.708-3.88c.288-.655.843-1.01 1.541-1.01.699 0 1.253.355 1.542 1.01l1.707 3.88c.078.189.144.433.144.644 0 .964-.676 1.64-1.64 1.64-.33 0-.59-.083-.854-.168-.271-.087-.545-.175-.899-.175-.35 0-.63.089-.906.176-.267.085-.53.168-.846.168-.964 0-1.64-.677-1.64-1.641 0-.211.066-.455.143-.644Zm3.25-3.204-1.686 3.814c.499-.233 1.075-.344 1.685-.344.588 0 1.187.111 1.664.344l-1.664-3.814Zm26.473-.678c-.378 0-.65.268-.65.64 0 .374.272.641.65.641s.651-.267.651-.64-.273-.64-.65-.64Zm-11.907 5.502c-1.009 0-1.738-.745-1.738-1.91 0-1.187.73-1.933 1.737-1.933.468 0 .814.158 1.019.468V8.86h1.05v5.25h-1.05v-.372c-.2.304-.546.456-1.019.456Zm-.667-1.91c0-.652.352-1.077.887-1.077.54 0 .887.42.887 1.071 0 .64-.346 1.056-.887 1.056-.535 0-.887-.415-.887-1.05Zm4.384-.011c0-.646.351-1.06.877-1.06.53 0 .882.414.882 1.06 0 .646-.352 1.06-.883 1.06-.525 0-.876-.414-.876-1.06Zm11.571.835c0 .194-.147.31-.52.31-.42 0-.682-.221-.682-.489h-1.05c.026.725.714 1.265 1.711 1.265.946 0 1.55-.42 1.55-1.165 0-.557-.358-.945-1.066-1.087l-.762-.152c-.23-.047-.367-.163-.367-.315 0-.226.23-.347.525-.347.42 0 .583.195.583.426h.997c-.026-.683-.562-1.203-1.56-1.203-.929 0-1.559.468-1.559 1.176 0 .64.415.93 1.035 1.06l.756.164c.247.052.41.157.41.357Zm-2.85 1.002h-1.05v-3.675h1.05v3.675Zm-4.264-3.675v.384c.268-.31.625-.468 1.066-.468.824 0 1.36.536 1.36 1.365v2.394h-1.05v-2.173c0-.446-.252-.714-.688-.714-.436 0-.688.268-.688.714v2.173h-1.05v-3.675h1.05Zm-3.58-.084c-1.119 0-1.948.809-1.948 1.922s.83 1.921 1.948 1.921c1.123 0 1.953-.808 1.953-1.921s-.83-1.922-1.953-1.922Zm-8.758.856c-.535 0-.887.425-.887 1.076 0 .636.352 1.05.887 1.05.54 0 .887-.414.887-1.055 0-.65-.346-1.07-.887-1.07Zm-1.958 1.076c0 1.166.73 1.911 1.732 1.911.478 0 .82-.152 1.024-.456v.372h1.05v-3.675h-1.05v.384c-.21-.31-.556-.468-1.024-.468-1.003 0-1.732.746-1.732 1.932Z" />
-                </g>
-                <rect width="8" height="3" x="162" y="9.944" fill="#DAD9D6" rx="1" />
-                <rect width="14" height="3" x="174" y="9.944" fill="#DAD9D6" rx="1" />
-                <rect width="10" height="3" x="192" y="9.944" fill="#DAD9D6" rx="1" />
-                <rect width="10" height="3" x="206" y="9.944" fill="#DAD9D6" rx="1" />
-                <rect width="81" height="6" x="24" y="32" fill="#DAD9D6" rx="2" />
-                <rect width="95" height="6" x="24" y="44" fill="#DAD9D6" rx="2" />
-                <rect width="16" height="5" x="24" y="60" fill="#21201C" rx="1" />
-                <path fill="#DAD9D6" d="M24 85a4 4 0 0 1 4-4h184a4 4 0 0 1 4 4v20H24V85Z" />
-                <path
-                  fill="url(#b)"
-                  fillOpacity=".2"
-                  d="M24 85a4 4 0 0 1 4-4h184a4 4 0 0 1 4 4v20H24V85Z"
-                />
-                <defs>
-                  <linearGradient
-                    id="b"
-                    x1="120"
-                    x2="120"
-                    y1="81"
-                    y2="105"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopOpacity="0" />
-                    <stop offset="1" stopColor="#82827C" />
-                  </linearGradient>
-                  <clipPath id="a">
-                    <path fill="#fff" d="M24 6h36.307v10.889H24z" />
-                  </clipPath>
-                </defs>
-              </svg>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <p className="text-brass-light text-sm font-semibold tracking-[0.25em] uppercase mb-6 animate-fade-in">
+            Luxury Redefined
+          </p>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 animate-fade-in animate-delay-1 leading-[1.1]">
+            Discover{' '}
+            <span className="text-brass-light">Extraordinary</span>{' '}
+            Stays
+          </h1>
+          <p className="text-lg md:text-xl text-white/50 mb-12 max-w-2xl mx-auto animate-fade-in animate-delay-2 leading-relaxed font-light">
+            Curated luxury accommodations across the world's most coveted destinations.
+            Where impeccable service meets timeless elegance.
+          </p>
 
-              <div className="absolute left-0 right-0 bottom-0 h-16 bg-gradient-to-b from-white/0 to-white"></div>
-            </div>
-
-            <div className="flex flex-row gap-4">
-              <div className="shrink-0 w-10 h-10 bg-primary/20 rounded-md flex justify-center items-center">
-                <svg className="h-6 w-6 fill-primary" viewBox="0 0 256 256">
-                  <path
-                    fill="currentColor"
-                    d="M208 24H72a32 32 0 0 0-32 32v168a8 8 0 0 0 8 8h144a8 8 0 0 0 0-16H56a16 16 0 0 1 16-16h136a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8m-88 16h48v72l-19.21-14.4a8 8 0 0 0-9.6 0L120 112Zm80 144H72a31.8 31.8 0 0 0-16 4.29V56a16 16 0 0 1 16-16h32v88a8 8 0 0 0 12.8 6.4L144 114l27.21 20.4A8 8 0 0 0 176 136a8 8 0 0 0 8-8V40h16Z"
-                  />
-                </svg>
-              </div>
-
-              <div className="space-y-1">
-                <h2 className="text-lg font-semibold">
-                  <a href="https://docs.adonisjs.com" target="_blank">
-                    <span>Documentation</span>
-                    <span className="absolute inset-0"></span>
-                  </a>
-                </h2>
-
-                <p className="text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-700">
-                  Dive into the official documentation to learn AdonisJS. Read carefully to discover
-                  an unmatched set of features, best practices and developer experience. Through
-                  examples, guides and API references, you'll find everything you need to build your
-                  next project. From installation to deployment, we've got you covered.
-                </p>
-              </div>
-            </div>
-          </article>
-
-          <article className="relative p-6 shadow-sm hover:shadow border border-sand-7 hover:border-sand-8 rounded-2xl transition ease-in-out duration-700 group flex flex-row gap-4">
-            <div className="shrink-0 w-10 h-10 bg-primary/20 rounded-md flex justify-center items-center">
-              <svg className="h-6 w-6 fill-primary" viewBox="0 0 256 256">
-                <path
-                  fill="currentColor"
-                  d="m164.44 105.34-48-32A8 8 0 0 0 104 80v64a8 8 0 0 0 12.44 6.66l48-32a8 8 0 0 0 0-13.32M120 129.05V95l25.58 17ZM216 40H40a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 128H40V56h176zm16 40a8 8 0 0 1-8 8H32a8 8 0 0 1 0-16h192a8 8 0 0 1 8 8"
-                />
-              </svg>
-            </div>
-
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold">
-                <a href="https://adocasts.com" target="_blank">
-                  <span>Adocasts</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-700">
-                Level up your development and Adonis skills with hours of video content, from
-                beginner to advanced, through databases, testing, and more.
-              </p>
-            </div>
-          </article>
-
-          <article className="relative p-6 shadow-sm hover:shadow border border-sand-7 hover:border-sand-8 rounded-2xl transition ease-in-out duration-700 group flex flex-row gap-4">
-            <div className="shrink-0 w-10 h-10 bg-primary/20 rounded-md flex justify-center items-center">
-              <svg className="h-6 w-6 fill-primary" viewBox="0 0 256 256">
-                <path
-                  fill="currentColor"
-                  d="M208 96a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v8H96v-8a16 16 0 0 0-16-16H48a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h8v64h-8a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-8h64v8a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16h-8V96Zm-32-48h32v32h-32ZM48 48h32v15.9a.5.5 0 0 0 0 .2V80H48Zm32 160H48v-32h32v15.9a.5.5 0 0 0 0 .2zm128 0h-32v-32h32Zm-24-48h-8a16 16 0 0 0-16 16v8H96v-8a16 16 0 0 0-16-16h-8V96h8a16 16 0 0 0 16-16v-8h64v8a16 16 0 0 0 16 16h8Z"
-                />
-              </svg>
-            </div>
-
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold">
-                <a href="https://packages.adonisjs.com" target="_blank">
-                  <span>Packages</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-700">
-                Supercharge your AdonisJS application with packages built and maintained by both the
-                core team and the community.
-              </p>
-            </div>
-          </article>
-
-          <article className="relative p-6 shadow-sm hover:shadow border border-sand-7 hover:border-sand-8 rounded-2xl transition ease-in-out duration-700 group flex flex-row gap-4">
-            <div className="shrink-0 w-10 h-10 bg-primary/20 rounded-md flex justify-center items-center">
-              <svg className="h-6 w-6 fill-primary" viewBox="0 0 256 256">
-                <path
-                  fill="currentColor"
-                  d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m0 192a88 88 0 1 1 88-88 88.1 88.1 0 0 1-88 88m44.42-143.16-64 32a8.05 8.05 0 0 0-3.58 3.58l-32 64A8 8 0 0 0 80 184a8.1 8.1 0 0 0 3.58-.84l64-32a8.05 8.05 0 0 0 3.58-3.58l32-64a8 8 0 0 0-10.74-10.74M138 138l-40.11 20.11L118 118l40.15-20.07Z"
-                />
-              </svg>
-            </div>
-
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold">
-                <a href="https://discord.gg/vDcEjq6" target="_blank">
-                  <span>Discord</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-700">
-                Never get lost again, ask questions, and share your knowledge or projects with a
-                growing and supportive community. Join us.
-              </p>
-            </div>
-          </article>
-        </div>
-
-        {/* Features */}
-        <div className="grow mt-10 mb-8 px-16 xl:px-8 max-w-screen-xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            <article className="relative py-4 px-5 bg-white border border-transparent rounded-lg hover:border-sand-8 hover:shadow-sm transition duration-100 ease-in-out group">
-              <h2 className="font-semibold text-sand-12">
-                <a
-                  href="https://lucid.adonisjs.com"
-                  target="_blank"
-                  className="flex flex-row gap-2"
-                >
-                  <span className="bg-[#D5EAE7] h-6 w-6 flex justify-center items-center rounded">
-                    <svg className="h-4 w-4 fill-[#0E766E]" viewBox="0 0 24 24">
-                      <g
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                      >
-                        <path d="M4 6a8 3 0 1 0 16 0A8 3 0 1 0 4 6" />
-                        <path d="M4 6v6a8 3 0 0 0 16 0V6" />
-                        <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
-                      </g>
-                    </svg>
-                  </span>
-                  <span>Lucid</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="mt-4 text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-100">
-                A SQL ORM with a powerful query builder, active record, migrations, and model
-                factories. Everything you need to work with databases.
-              </p>
-
-              <svg
-                className="absolute top-4 right-5 opacity-0 group-hover:opacity-100 text-sand-9 w-4 h-4 transition ease-in-out duration-100"
-                viewBox="0 0 24 24"
+          <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in animate-delay-3">
+            <Link
+              href="/hotels"
+              className="bg-brass hover:bg-brass-light text-charcoal px-10 py-4 rounded-lg text-sm font-semibold tracking-wide transition-all hover:shadow-lg hover:shadow-brass/20"
+            >
+              Browse Hotels
+            </Link>
+            {!user && (
+              <Link
+                href="/register"
+                className="border border-white/20 hover:border-brass-light/50 text-white hover:text-brass-light px-10 py-4 rounded-lg text-sm font-semibold tracking-wide transition-all"
               >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1 9-9m-5 0h5v5"
-                />
-              </svg>
-            </article>
-
-            <article className="relative py-4 px-5 bg-white border border-transparent rounded-lg hover:border-sand-8 hover:shadow-sm transition duration-100 ease-in-out group">
-              <h2 className="font-semibold text-sand-12">
-                <a href="https://vinejs.dev/" target="_blank" className="flex flex-row gap-2">
-                  <span className="bg-[#F3DBFC] h-6 w-6 flex justify-center items-center rounded">
-                    <svg className="h-4 w-4 fill-[#CA5AF2]" viewBox="0 0 24 24">
-                      <path
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M12 3a12 12 0 0 0 8.5 3A12 12 0 0 1 12 21 12 12 0 0 1 3.5 6 12 12 0 0 0 12 3"
-                      />
-                    </svg>
-                  </span>
-                  <span>Vine</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="mt-4 text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-100">
-                A yet simple but feature rich and type-safe form data validation. It comes with 50+
-                built-in rules and an expressive API to define custom rules.
-              </p>
-
-              <svg
-                className="absolute top-4 right-5 opacity-0 group-hover:opacity-100 text-sand-9 w-4 h-4 transition ease-in-out duration-100"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1 9-9m-5 0h5v5"
-                />
-              </svg>
-            </article>
-
-            <article className="relative py-4 px-5 bg-white border border-transparent rounded-lg hover:border-sand-8 hover:shadow-sm transition duration-100 ease-in-out group">
-              <h2 className="font-semibold text-sand-12">
-                <a href="https://inertiajs.com/" target="_blank" className="flex flex-row gap-2">
-                  <span className="bg-[#B8EAE0] h-6 w-6 flex justify-center items-center rounded">
-                    <svg className="h-4 w-4 fill-[#4BBBA5]" viewBox="0 0 24 24">
-                      <path
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m12.5 8l4 4l-4 4H17l4-4l-4-4zm-9 0l4 4l-4 4H8l4-4l-4-4z"
-                      />
-                    </svg>
-                  </span>
-                  <span>InertiaJS</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="mt-4 text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-100">
-                The modern monolithic application architecture. It allows you to build single-page
-                applications without building an API.
-              </p>
-
-              <svg
-                className="absolute top-4 right-5 opacity-0 group-hover:opacity-100 text-sand-9 w-4 h-4 transition ease-in-out duration-100"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1 9-9m-5 0h5v5"
-                />
-              </svg>
-            </article>
-
-            <article className="relative py-4 px-5 bg-white border border-transparent rounded-lg hover:border-sand-8 hover:shadow-sm transition duration-100 ease-in-out group">
-              <h2 className="font-semibold text-sand-12">
-                <a href="https://japa.dev" target="_blank" className="flex flex-row gap-2">
-                  <span className="bg-[#FACDDC] h-6 w-6 flex justify-center items-center rounded">
-                    <svg className="h-4 w-4 fill-[#DD3074]" viewBox="0 0 256 256">
-                      <path
-                        fill="currentColor"
-                        d="m240.49 83.51-60-60a12 12 0 0 0-17 0L34.28 152.75a48.77 48.77 0 0 0 69 69l111.2-111.26 21.31-7.11a12 12 0 0 0 4.7-19.87M86.28 204.75a24.77 24.77 0 0 1-35-35l28.13-28.13c7.73-2.41 19.58-3 35.06 5a84 84 0 0 0 21.95 8ZM204.2 88.62a12.15 12.15 0 0 0-4.69 2.89l-38.89 38.9c-7.73 2.41-19.58 3-35.06-5a84 84 0 0 0-21.94-8L172 49l37.79 37.79Z"
-                      />
-                    </svg>
-                  </span>
-                  <span>Japa</span>
-                  <span className="absolute inset-0"></span>
-                </a>
-              </h2>
-
-              <p className="mt-4 text-sm text-sand-11 group-hover:text-sand-12 transition ease-in-out duration-100">
-                From JSON API tests using Open API schema to browser tests with Playwrighht, it
-                comes with everything you need to test your application.
-              </p>
-
-              <svg
-                className="absolute top-4 right-5 opacity-0 group-hover:opacity-100 text-sand-9 w-4 h-4 transition ease-in-out duration-100"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1 9-9m-5 0h5v5"
-                />
-              </svg>
-            </article>
+                Create Account
+              </Link>
+            )}
           </div>
         </div>
 
-        <div className="text-sm text-center [&>code]:font-medium [&>code]:text-[#a599ff] bg-sand-12 text-sand-1 fixed bottom-0 left-0 right-0 py-2">
-          Route for this page is registered in <code>start/routes.ts</code> file, rendering{' '}
-          <code>inertia/pages/home.tsx</code> template
+        {/* Stats bar */}
+        <div className="max-w-3xl mx-auto mt-20 md:mt-24 animate-fade-in animate-delay-4">
+          <div className="border-t border-white/10 pt-10">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-brass-light font-display">500+</p>
+                <p className="text-xs md:text-sm text-white/40 mt-1 tracking-wide uppercase font-light">Hotels</p>
+              </div>
+              <div className="border-x border-white/10">
+                <p className="text-3xl md:text-4xl font-bold text-brass-light font-display">10,000+</p>
+                <p className="text-xs md:text-sm text-white/40 mt-1 tracking-wide uppercase font-light">Happy Guests</p>
+              </div>
+              <div>
+                <p className="text-3xl md:text-4xl font-bold text-brass-light font-display">50+</p>
+                <p className="text-xs md:text-sm text-white/40 mt-1 tracking-wide uppercase font-light">Destinations</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </>
+      </section>
+
+      {/* ================================================================ */}
+      {/* FEATURED DESTINATIONS                                            */}
+      {/* ================================================================ */}
+      <section className="py-20 md:py-28">
+        <div className="text-center mb-14">
+          <p className="text-brass text-xs font-semibold tracking-[0.2em] uppercase mb-3">Explore the World</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-charcoal gold-line mx-auto inline-block animate-fade-in">
+            Popular Destinations
+          </h2>
+          <p className="text-warm-gray mt-8 max-w-xl mx-auto leading-relaxed">
+            From sun-drenched coastlines to vibrant metropolises, discover our most sought-after locations handpicked for the discerning traveler.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          {destinations.map((dest) => (
+            <Link
+              key={dest.city}
+              href="/hotels"
+              className="group relative h-64 md:h-72 rounded-xl overflow-hidden cursor-pointer transition-transform duration-500 hover:scale-[1.02]"
+              style={{ background: dest.gradient }}
+            >
+              {/* Overlay for hover darkening */}
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-500" />
+
+              {/* Subtle inner border */}
+              <div className="absolute inset-3 border border-white/10 rounded-lg group-hover:border-brass-light/20 transition-colors duration-500" />
+
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 group-hover:text-brass-light transition-colors duration-300">
+                  {dest.city}
+                </h3>
+                <p className="text-sm text-white/60 tracking-wide">{dest.country}</p>
+              </div>
+
+              {/* Decorative corner accent */}
+              <div className="absolute top-4 right-4">
+                <svg className="w-6 h-6 text-white/10 group-hover:text-brass-light/30 transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* HOW IT WORKS                                                     */}
+      {/* ================================================================ */}
+      <section className="py-20 md:py-28 border-t border-cream">
+        <div className="text-center mb-16">
+          <p className="text-brass text-xs font-semibold tracking-[0.2em] uppercase mb-3">Simple Process</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-charcoal gold-line mx-auto inline-block animate-fade-in">
+            How It Works
+          </h2>
+          <p className="text-warm-gray mt-8 max-w-xl mx-auto leading-relaxed">
+            Your journey from inspiration to experience in three effortless steps.
+          </p>
+        </div>
+
+        <div className="relative">
+          {/* Connecting dotted line (hidden on mobile) */}
+          <div className="hidden md:block absolute top-16 left-1/2 -translate-x-1/2 w-2/3 border-t-2 border-dashed border-brass/15" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+            {steps.map((step, index) => (
+              <div key={step.title} className="text-center relative">
+                {/* Step number */}
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-ivory border-2 border-brass/20 flex items-center justify-center z-10">
+                  <span className="text-[10px] font-bold text-brass">{index + 1}</span>
+                </div>
+
+                {/* Icon circle */}
+                <div className="w-28 h-28 rounded-full bg-brass/10 flex items-center justify-center mx-auto mb-6 mt-4 relative">
+                  <div className="w-20 h-20 rounded-full bg-brass/15 flex items-center justify-center">
+                    {step.icon}
+                  </div>
+                </div>
+
+                <h3 className="text-xl font-bold text-charcoal mb-3">{step.title}</h3>
+                <p className="text-warm-gray text-sm leading-relaxed max-w-xs mx-auto">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* TESTIMONIALS                                                     */}
+      {/* ================================================================ */}
+      <section className="py-20 md:py-28 border-t border-cream">
+        <div className="text-center mb-14">
+          <p className="text-brass text-xs font-semibold tracking-[0.2em] uppercase mb-3">Testimonials</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-charcoal gold-line mx-auto inline-block animate-fade-in">
+            What Our Guests Say
+          </h2>
+          <p className="text-warm-gray mt-8 max-w-xl mx-auto leading-relaxed">
+            Hear from travelers who have experienced the Akkor difference firsthand.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {testimonials.map((testimonial) => (
+            <div
+              key={testimonial.name}
+              className="bg-white rounded-xl p-8 card-shadow hover:card-shadow-hover transition-shadow duration-300 relative"
+            >
+              {/* Large decorative quote mark */}
+              <span className="text-6xl leading-none text-brass/20 font-display absolute top-4 left-6 select-none">
+                &ldquo;
+              </span>
+
+              {/* Star rating */}
+              <div className="flex gap-0.5 mb-5 pt-6">
+                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                  <StarIcon key={i} className="w-4 h-4 text-brass" />
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p className="text-charcoal-light italic leading-relaxed mb-6 text-[15px]">
+                &ldquo;{testimonial.quote}&rdquo;
+              </p>
+
+              {/* Author */}
+              <div className="border-t border-cream pt-5">
+                <p className="font-semibold text-charcoal text-sm">{testimonial.name}</p>
+                <p className="text-xs text-brass tracking-wide mt-0.5">Verified Guest</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* CTA SECTION                                                      */}
+      {/* ================================================================ */}
+      <section className="hero-gradient -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-20 md:py-28 relative overflow-hidden">
+        {/* Decorative geometric accents */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg className="absolute top-1/2 left-10 -translate-y-1/2 w-32 h-32 opacity-[0.03]" viewBox="0 0 100 100" fill="none">
+            <polygon points="50,5 95,50 50,95 5,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <polygon points="50,25 75,50 50,75 25,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+          </svg>
+          <svg className="absolute top-1/2 right-10 -translate-y-1/2 w-32 h-32 opacity-[0.03]" viewBox="0 0 100 100" fill="none">
+            <polygon points="50,5 95,50 50,95 5,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+            <polygon points="50,25 75,50 50,75 25,50" stroke="currentColor" strokeWidth="0.5" className="text-brass-light" />
+          </svg>
+        </div>
+
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight animate-fade-in">
+            Ready for Your Next{' '}
+            <span className="text-brass-light">Adventure</span>?
+          </h2>
+          <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto leading-relaxed font-light">
+            Join thousands of discerning travelers who trust Akkor Hotel to deliver extraordinary experiences, every time.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              href="/hotels"
+              className="bg-brass hover:bg-brass-light text-charcoal px-10 py-4 rounded-lg text-sm font-semibold tracking-wide transition-all hover:shadow-lg hover:shadow-brass/20"
+            >
+              Explore Hotels
+            </Link>
+            {!user && (
+              <Link
+                href="/register"
+                className="border border-white/20 hover:border-brass-light/50 text-white hover:text-brass-light px-10 py-4 rounded-lg text-sm font-semibold tracking-wide transition-all"
+              >
+                Sign Up Free
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
+    </Layout>
   )
 }
