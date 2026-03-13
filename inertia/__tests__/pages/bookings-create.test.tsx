@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { mockUsePage } from '../setup'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, afterEach } from 'vitest'
+import { mockUsePage, mockUseFormOverrides } from '../setup'
 import BookingCreate from '~/pages/bookings/create'
 
 const sampleHotels = [
@@ -88,5 +88,89 @@ describe('Booking Create Page', () => {
     expect(screen.getByLabelText('Hotel')).toBeRequired()
     expect(screen.getByLabelText('Check In')).toBeRequired()
     expect(screen.getByLabelText('Check Out')).toBeRequired()
+  })
+
+  afterEach(() => {
+    Object.keys(mockUseFormOverrides).forEach((k) => delete mockUseFormOverrides[k])
+  })
+
+  it('displays hotelId error when present', () => {
+    Object.assign(mockUseFormOverrides, { errors: { hotelId: 'Please select a hotel' } })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByText('Please select a hotel')).toBeInTheDocument()
+  })
+
+  it('displays checkIn error when present', () => {
+    Object.assign(mockUseFormOverrides, { errors: { checkIn: 'Check-in date is required' } })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByText('Check-in date is required')).toBeInTheDocument()
+  })
+
+  it('displays checkOut error when present', () => {
+    Object.assign(mockUseFormOverrides, { errors: { checkOut: 'Check-out date is required' } })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByText('Check-out date is required')).toBeInTheDocument()
+  })
+
+  it('shows processing state on submit button', () => {
+    Object.assign(mockUseFormOverrides, { processing: true })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByRole('button', { name: 'Booking...' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Booking...' })).toBeDisabled()
+  })
+
+  it('calls post on form submit', () => {
+    const postMock = vi.fn()
+    Object.assign(mockUseFormOverrides, { post: postMock })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    const form = screen.getByRole('button', { name: 'Confirm Booking' }).closest('form')!
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+    expect(postMock).toHaveBeenCalledWith('/bookings')
+  })
+
+  it('shows selected hotel name and location in sidebar', () => {
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={sampleHotels[0]} />)
+    // Hotel name in sidebar
+    expect(screen.getByText('Grand Hotel')).toBeInTheDocument()
+    expect(screen.getByText('Paris')).toBeInTheDocument()
+  })
+
+  it('displays nights count when dates are set', () => {
+    Object.assign(mockUseFormOverrides, {
+      data: { hotelId: '1', checkIn: '2026-06-01', checkOut: '2026-06-04' },
+    })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByText('3')).toBeInTheDocument()
+    expect(screen.getByText('nights')).toBeInTheDocument()
+  })
+
+  it('displays formatted dates in sidebar when set', () => {
+    Object.assign(mockUseFormOverrides, {
+      data: { hotelId: '', checkIn: '2026-06-01', checkOut: '2026-06-04' },
+    })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByText('Jun 1')).toBeInTheDocument()
+    expect(screen.getByText('Jun 4')).toBeInTheDocument()
+  })
+
+  it('triggers setData when changing form fields', () => {
+    const setDataMock = vi.fn()
+    Object.assign(mockUseFormOverrides, { setData: setDataMock })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    fireEvent.change(screen.getByLabelText('Hotel'), { target: { value: '1' } })
+    expect(setDataMock).toHaveBeenCalledWith('hotelId', '1')
+    fireEvent.change(screen.getByLabelText('Check In'), { target: { value: '2026-06-01' } })
+    expect(setDataMock).toHaveBeenCalledWith('checkIn', '2026-06-01')
+    fireEvent.change(screen.getByLabelText('Check Out'), { target: { value: '2026-06-05' } })
+    expect(setDataMock).toHaveBeenCalledWith('checkOut', '2026-06-05')
+  })
+
+  it('displays singular night for 1-night booking', () => {
+    Object.assign(mockUseFormOverrides, {
+      data: { hotelId: '1', checkIn: '2026-06-01', checkOut: '2026-06-02' },
+    })
+    render(<BookingCreate hotels={sampleHotels} selectedHotel={null} />)
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(screen.getByText('night')).toBeInTheDocument()
   })
 })

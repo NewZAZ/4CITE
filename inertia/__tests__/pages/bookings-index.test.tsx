@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { mockUsePage } from '../setup'
+import { mockUsePage, mockRouter } from '../setup'
 import BookingsIndex from '~/pages/bookings/index'
 
 const sampleBookings = {
@@ -109,5 +109,81 @@ describe('Bookings Index Page', () => {
     })
     render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
     expect(screen.getByText('New Booking')).toBeInTheDocument()
+  })
+
+  it('admin can submit search', () => {
+    mockUsePage.mockReturnValue({
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
+    })
+    render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
+    const searchInput = screen.getByPlaceholderText('Search by booking ID, user name or email...')
+    fireEvent.change(searchInput, { target: { value: 'John' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Search' }))
+    expect(mockRouter.get).toHaveBeenCalledWith(
+      '/bookings',
+      { search: 'John' },
+      { preserveState: true }
+    )
+  })
+
+  it('shows search-specific empty message when searching', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'User', email: 'user@test.com', role: 'user' }, flash: {} },
+    })
+    render(<BookingsIndex bookings={emptyBookings} filters={{ search: 'nonexistent' }} />)
+    expect(screen.getByText(/No results for "nonexistent"/)).toBeInTheDocument()
+  })
+
+  it('renders edit links for bookings', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'User', email: 'user@test.com', role: 'user' }, flash: {} },
+    })
+    render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
+    const editLinks = screen.getAllByText('Edit')
+    expect(editLinks.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('renders delete buttons for bookings', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'User', email: 'user@test.com', role: 'user' }, flash: {} },
+    })
+    render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
+    const deleteButtons = screen.getAllByText('Delete')
+    expect(deleteButtons.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('delete button calls confirm and router.delete', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'User', email: 'user@test.com', role: 'user' }, flash: {} },
+    })
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
+    const deleteButtons = screen.getAllByText('Delete')
+    fireEvent.click(deleteButtons[0])
+    expect(window.confirm).toHaveBeenCalledWith('Cancel this booking?')
+    expect(mockRouter.delete).toHaveBeenCalled()
+    vi.restoreAllMocks()
+  })
+
+  it('shows admin total reservations count', () => {
+    mockUsePage.mockReturnValue({
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
+    })
+    render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
+    expect(screen.getByText('2 total reservations')).toBeInTheDocument()
+  })
+
+  it('shows regular user subtitle', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'User', email: 'user@test.com', role: 'user' }, flash: {} },
+    })
+    render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
+    expect(screen.getByText('Manage your reservations')).toBeInTheDocument()
   })
 })

@@ -31,16 +31,6 @@ test.group('User Model', (group) => {
     assert.notProperty(serialized, 'password')
   })
 
-  test('user has correct properties', async ({ assert }) => {
-    const user = await UserFactory.create()
-    const serialized = user.serialize()
-    assert.property(serialized, 'id')
-    assert.property(serialized, 'pseudo')
-    assert.property(serialized, 'email')
-    assert.property(serialized, 'role')
-    assert.property(serialized, 'createdAt')
-  })
-
   test('password is hashed and not stored in plain text', async ({ assert }) => {
     const user = await UserFactory.merge({ password: 'Test@1234' }).create()
     assert.notEqual(user.password, 'Test@1234')

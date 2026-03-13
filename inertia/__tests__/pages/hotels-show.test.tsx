@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { mockUsePage } from '../setup'
+import { mockUsePage, mockRouter } from '../setup'
 import HotelShow from '~/pages/hotels/show'
 
 // Mock the Carousel component
@@ -104,5 +104,57 @@ describe('Hotel Show Page', () => {
     render(<HotelShow hotel={{ ...sampleHotel, pictureList: null }} />)
     const carousel = screen.getByTestId('carousel')
     expect(carousel.getAttribute('data-images')).toBe('[]')
+  })
+
+  it('shows sign in prompt when not logged in', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    render(<HotelShow hotel={sampleHotel} />)
+    expect(screen.getByText('Sign in to book')).toBeInTheDocument()
+  })
+
+  it('admin delete button calls confirm and router.delete', () => {
+    mockUsePage.mockReturnValue({
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
+    })
+    vi.spyOn(window, 'confirm').mockReturnValue(true)
+    render(<HotelShow hotel={sampleHotel} />)
+    fireEvent.click(screen.getByText('Delete'))
+    expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete this hotel?')
+    expect(mockRouter.delete).toHaveBeenCalledWith('/hotels/1')
+    vi.restoreAllMocks()
+  })
+
+  it('admin delete button does not delete when confirm is cancelled', () => {
+    mockUsePage.mockReturnValue({
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
+    })
+    vi.spyOn(window, 'confirm').mockReturnValue(false)
+    mockRouter.delete.mockClear()
+    render(<HotelShow hotel={sampleHotel} />)
+    fireEvent.click(screen.getByText('Delete'))
+    expect(mockRouter.delete).not.toHaveBeenCalled()
+    vi.restoreAllMocks()
+  })
+
+  it('renders photo count', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    render(<HotelShow hotel={sampleHotel} />)
+    expect(screen.getByText('1 photo')).toBeInTheDocument()
+  })
+
+  it('renders plural photo count', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    render(
+      <HotelShow
+        hotel={{ ...sampleHotel, pictureList: ['https://a.jpg', 'https://b.jpg'] }}
+      />
+    )
+    expect(screen.getByText('2 photos')).toBeInTheDocument()
   })
 })

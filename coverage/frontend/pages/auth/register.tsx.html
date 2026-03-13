@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -123,21 +123,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -147,17 +144,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -185,9 +185,9 @@ export default function Register() {
     password: '',
   })
 &nbsp;
-  function <span class="fstat-no" title="function not covered" >handleSubmit(e</span>: React.FormEvent) {
-<span class="cstat-no" title="statement not covered" >    e.preventDefault()</span>
-<span class="cstat-no" title="statement not covered" >    post('/register')</span>
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    post('/register')
   }
 &nbsp;
   return (
@@ -203,21 +203,21 @@ export default function Register() {
             &lt;form onSubmit={handleSubmit} className="space-y-5"&gt;
               &lt;div&gt;
                 &lt;label htmlFor="pseudo" className="block text-sm font-medium text-charcoal-light mb-1.5"&gt;Pseudo&lt;/label&gt;
-                &lt;input id="pseudo" type="text" value={data.pseudo} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('pseudo', e.target.value)} c</span>lassName="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-2.5 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors" required /&gt;
-                {errors.pseudo &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.pseudo}&lt;/p&gt;}</span>
+                &lt;input id="pseudo" type="text" value={data.pseudo} onChange={(e) =&gt; setData('pseudo', e.target.value)} className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-2.5 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors" required /&gt;
+                {errors.pseudo &amp;&amp; &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.pseudo}&lt;/p&gt;}
               &lt;/div&gt;
               &lt;div&gt;
                 &lt;label htmlFor="email" className="block text-sm font-medium text-charcoal-light mb-1.5"&gt;Email&lt;/label&gt;
-                &lt;input id="email" type="email" value={data.email} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('email', e.target.value)} c</span>lassName="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-2.5 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors" required /&gt;
-                {errors.email &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.email}&lt;/p&gt;}</span>
+                &lt;input id="email" type="email" value={data.email} onChange={(e) =&gt; setData('email', e.target.value)} className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-2.5 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors" required /&gt;
+                {errors.email &amp;&amp; &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.email}&lt;/p&gt;}
               &lt;/div&gt;
               &lt;div&gt;
                 &lt;label htmlFor="password" className="block text-sm font-medium text-charcoal-light mb-1.5"&gt;Password&lt;/label&gt;
-                &lt;input id="password" type="password" value={data.password} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('password', e.target.value)} c</span>lassName="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-2.5 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors" required minLength={8} /&gt;
-                {errors.password &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.password}&lt;/p&gt;}</span>
+                &lt;input id="password" type="password" value={data.password} onChange={(e) =&gt; setData('password', e.target.value)} className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-2.5 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors" required minLength={8} /&gt;
+                {errors.password &amp;&amp; &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.password}&lt;/p&gt;}
               &lt;/div&gt;
               &lt;button type="submit" disabled={processing} className="w-full bg-charcoal hover:bg-charcoal-light text-white font-semibold py-3 px-4 rounded-lg disabled:opacity-50 transition-colors tracking-wide"&gt;
-                {processing ? <span class="branch-0 cbranch-no" title="branch not covered" >'Creating account...' : '</span>Create Account'}
+                {processing ? 'Creating account...' : 'Create Account'}
               &lt;/button&gt;
             &lt;/form&gt;
 &nbsp;
@@ -238,7 +238,7 @@ export default function Register() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-24T13:10:04.057Z
+                at 2026-03-13T13:30:01.691Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

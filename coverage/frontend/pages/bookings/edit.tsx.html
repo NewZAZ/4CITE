@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.44% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">79.16% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/24</span>
+                <span class='fraction'>19/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.44% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -339,25 +339,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -367,7 +367,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -423,7 +423,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -441,7 +441,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -461,7 +461,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -605,9 +605,9 @@ export default function BookingEdit({ booking }: Props) {
     status: booking.status,
   })
 &nbsp;
-  function <span class="fstat-no" title="function not covered" >handleSubmit(e</span>: React.FormEvent) {
-<span class="cstat-no" title="statement not covered" >    e.preventDefault()</span>
-<span class="cstat-no" title="statement not covered" >    put(`/bookings/${booking.id}`)</span>
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    put(`/bookings/${booking.id}`)
   }
 &nbsp;
   const statusConfig: Record&lt;string, { label: string; color: string }&gt; = {
@@ -683,11 +683,11 @@ export default function BookingEdit({ booking }: Props) {
                       id="checkIn"
                       type="date"
                       value={data.checkIn}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('checkIn', e.target.value)}</span>
+                      onChange={(e) =&gt; setData('checkIn', e.target.value)}
                       className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-3 text-charcoal focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors"
                     /&gt;
                     {errors.checkIn &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                      &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.checkIn}&lt;/p&gt;</span>
+                      &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.checkIn}&lt;/p&gt;
                     )}
                   &lt;/div&gt;
                   &lt;div&gt;
@@ -701,11 +701,11 @@ export default function BookingEdit({ booking }: Props) {
                       id="checkOut"
                       type="date"
                       value={data.checkOut}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('checkOut', e.target.value)}</span>
+                      onChange={(e) =&gt; setData('checkOut', e.target.value)}
                       className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-3 text-charcoal focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors"
                     /&gt;
                     {errors.checkOut &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                      &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.checkOut}&lt;/p&gt;</span>
+                      &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.checkOut}&lt;/p&gt;
                     )}
                   &lt;/div&gt;
                 &lt;/div&gt;
@@ -721,7 +721,7 @@ export default function BookingEdit({ booking }: Props) {
                   &lt;select
                     id="status"
                     value={data.status}
-                    onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('status', e.target.value)}</span>
+                    onChange={(e) =&gt; setData('status', e.target.value)}
                     className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-3 text-charcoal focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors"
                   &gt;
                     &lt;option value="pending"&gt;Pending&lt;/option&gt;
@@ -729,7 +729,7 @@ export default function BookingEdit({ booking }: Props) {
                     &lt;option value="cancelled"&gt;Cancelled&lt;/option&gt;
                   &lt;/select&gt;
                   {errors.status &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                    &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.status}&lt;/p&gt;</span>
+                    &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.status}&lt;/p&gt;
                   )}
                 &lt;/div&gt;
 &nbsp;
@@ -739,7 +739,7 @@ export default function BookingEdit({ booking }: Props) {
                     disabled={processing}
                     className="bg-brass hover:bg-brass-light text-charcoal font-semibold py-3 px-8 rounded-lg disabled:opacity-50 transition-all hover:shadow-lg hover:shadow-brass/20 tracking-wide"
                   &gt;
-                    {processing ? <span class="branch-0 cbranch-no" title="branch not covered" >'Saving...' : '</span>Save Changes'}
+                    {processing ? 'Saving...' : 'Save Changes'}
                   &lt;/button&gt;
                   &lt;Link
                     href="/bookings"
@@ -850,7 +850,7 @@ export default function BookingEdit({ booking }: Props) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-24T13:10:04.057Z
+                at 2026-03-13T13:30:01.691Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

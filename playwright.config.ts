@@ -2,11 +2,12 @@ import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: false,
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 1,
-  reporter: 'html',
+  workers: process.env.CI ? 2 : 4,
+  reporter: process.env.CI ? 'list' : 'html',
+  timeout: 30000,
   use: {
     baseURL: 'http://localhost:3333',
     trace: 'on-first-retry',

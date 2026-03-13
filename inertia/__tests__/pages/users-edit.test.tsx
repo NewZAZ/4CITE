@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { mockUsePage } from '../setup'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, afterEach } from 'vitest'
+import { mockUsePage, mockUseFormOverrides } from '../setup'
 import UserEdit from '~/pages/users/edit'
 
 const targetUser = {
@@ -211,5 +211,86 @@ describe('User Edit Page', () => {
     })
     render(<UserEdit targetUser={targetUser} />)
     expect(screen.getByLabelText('New Password')).not.toBeRequired()
+  })
+
+  afterEach(() => {
+    Object.keys(mockUseFormOverrides).forEach((k) => delete mockUseFormOverrides[k])
+  })
+
+  it('displays pseudo error when present', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    Object.assign(mockUseFormOverrides, { errors: { pseudo: 'Pseudo is required' } })
+    render(<UserEdit targetUser={targetUser} />)
+    expect(screen.getByText('Pseudo is required')).toBeInTheDocument()
+  })
+
+  it('displays email error when present', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    Object.assign(mockUseFormOverrides, { errors: { email: 'Email already taken' } })
+    render(<UserEdit targetUser={targetUser} />)
+    expect(screen.getByText('Email already taken')).toBeInTheDocument()
+  })
+
+  it('displays password error when present', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    Object.assign(mockUseFormOverrides, { errors: { password: 'Too short' } })
+    render(<UserEdit targetUser={targetUser} />)
+    expect(screen.getByText('Too short')).toBeInTheDocument()
+  })
+
+  it('shows processing state on submit button', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    Object.assign(mockUseFormOverrides, { processing: true })
+    render(<UserEdit targetUser={targetUser} />)
+    expect(screen.getByRole('button', { name: 'Saving...' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled()
+  })
+
+  it('calls put on form submit', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    const putMock = vi.fn()
+    Object.assign(mockUseFormOverrides, { put: putMock })
+    render(<UserEdit targetUser={targetUser} />)
+    const form = screen.getByRole('button', { name: 'Save Changes' }).closest('form')!
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+    expect(putMock).toHaveBeenCalledWith('/users/1')
+  })
+
+  it('shows Password will be updated when password is set', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    Object.assign(mockUseFormOverrides, {
+      data: { pseudo: 'JohnDoe', email: 'john@test.com', password: 'newpassword' },
+    })
+    render(<UserEdit targetUser={targetUser} />)
+    expect(screen.getByText('Password will be updated')).toBeInTheDocument()
+  })
+
+  it('triggers setData when changing form fields', () => {
+    mockUsePage.mockReturnValue({
+      props: { user: { id: 1, pseudo: 'JohnDoe', email: 'john@test.com', role: 'user' }, flash: {} },
+    })
+    const setDataMock = vi.fn()
+    Object.assign(mockUseFormOverrides, { setData: setDataMock })
+    render(<UserEdit targetUser={targetUser} />)
+    fireEvent.change(screen.getByLabelText('Display Name'), { target: { value: 'NewName' } })
+    expect(setDataMock).toHaveBeenCalledWith('pseudo', 'NewName')
+    fireEvent.change(screen.getByLabelText('Email Address'), {
+      target: { value: 'new@test.com' },
+    })
+    expect(setDataMock).toHaveBeenCalledWith('email', 'new@test.com')
+    fireEvent.change(screen.getByLabelText('New Password'), { target: { value: 'pass1234' } })
+    expect(setDataMock).toHaveBeenCalledWith('password', 'pass1234')
   })
 })

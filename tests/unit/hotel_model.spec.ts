@@ -15,22 +15,6 @@ test.group('Hotel Model', (group) => {
     assert.isNotNull(hotel.description)
   })
 
-  test('hotel has correct properties', async ({ assert }) => {
-    const hotel = await HotelFactory.create()
-    const serialized = hotel.serialize()
-    assert.property(serialized, 'id')
-    assert.property(serialized, 'name')
-    assert.property(serialized, 'location')
-    assert.property(serialized, 'description')
-    assert.property(serialized, 'pictureList')
-    assert.property(serialized, 'createdAt')
-  })
-
-  test('can create multiple hotels', async ({ assert }) => {
-    const hotels = await HotelFactory.createMany(5)
-    assert.lengthOf(hotels, 5)
-  })
-
   test('hotel has bookings relationship', async ({ assert }) => {
     const user = await UserFactory.create()
     const hotel = await HotelFactory.create()

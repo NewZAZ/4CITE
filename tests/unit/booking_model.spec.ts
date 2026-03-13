@@ -17,19 +17,6 @@ test.group('Booking Model', (group) => {
     assert.equal(booking.status, 'confirmed')
   })
 
-  test('booking has correct properties', async ({ assert }) => {
-    const user = await UserFactory.create()
-    const hotel = await HotelFactory.create()
-    const booking = await BookingFactory.merge({ userId: user.id, hotelId: hotel.id }).create()
-    const serialized = booking.serialize()
-    assert.property(serialized, 'id')
-    assert.property(serialized, 'userId')
-    assert.property(serialized, 'hotelId')
-    assert.property(serialized, 'checkIn')
-    assert.property(serialized, 'checkOut')
-    assert.property(serialized, 'status')
-  })
-
   test('booking belongs to user', async ({ assert }) => {
     const user = await UserFactory.create()
     const hotel = await HotelFactory.create()

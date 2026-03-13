@@ -10,6 +10,9 @@ const mockRouter = {
   visit: vi.fn(),
 }
 
+// Allow tests to override useForm return values (errors, processing)
+const mockUseFormOverrides: Record<string, any> = {}
+
 vi.mock('@inertiajs/react', () => ({
   Head: ({ title }: { title: string }) => <title>{title}</title>,
   Link: ({ href, children, className, method, as, onClick, ...rest }: any) => (
@@ -27,9 +30,10 @@ vi.mock('@inertiajs/react', () => ({
     processing: false,
     errors: {},
     reset: vi.fn(),
+    ...mockUseFormOverrides,
   }),
   router: mockRouter,
 }))
 
 // Export for test files to configure
-export { mockUsePage, mockRouter }
+export { mockUsePage, mockRouter, mockUseFormOverrides }

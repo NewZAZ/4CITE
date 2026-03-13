@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">86.36% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/22</span>
+                <span class='fraction'>19/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -286,22 +286,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,7 +345,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -362,7 +362,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -381,7 +381,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -503,9 +503,9 @@ export default function UserEdit({ targetUser }: Props) {
   const isOwnProfile = user?.id === targetUser.id
   const initials = targetUser.pseudo.slice(0, 2).toUpperCase()
 &nbsp;
-  function <span class="fstat-no" title="function not covered" >handleSubmit(e</span>: React.FormEvent) {
-<span class="cstat-no" title="statement not covered" >    e.preventDefault()</span>
-<span class="cstat-no" title="statement not covered" >    put(`/users/${targetUser.id}`)</span>
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    put(`/users/${targetUser.id}`)
   }
 &nbsp;
   return (
@@ -552,11 +552,11 @@ export default function UserEdit({ targetUser }: Props) {
                       id="pseudo"
                       type="text"
                       value={data.pseudo}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('pseudo', e.target.value)}</span>
+                      onChange={(e) =&gt; setData('pseudo', e.target.value)}
                       className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-3 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors"
                       required
                     /&gt;
-                    {errors.pseudo &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.pseudo}&lt;/p&gt;}</span>
+                    {errors.pseudo &amp;&amp; &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.pseudo}&lt;/p&gt;}
                   &lt;/div&gt;
                   &lt;div&gt;
                     &lt;label
@@ -569,11 +569,11 @@ export default function UserEdit({ targetUser }: Props) {
                       id="email"
                       type="email"
                       value={data.email}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('email', e.target.value)}</span>
+                      onChange={(e) =&gt; setData('email', e.target.value)}
                       className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-3 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors"
                       required
                     /&gt;
-                    {errors.email &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.email}&lt;/p&gt;}</span>
+                    {errors.email &amp;&amp; &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.email}&lt;/p&gt;}
                   &lt;/div&gt;
                 &lt;/div&gt;
 &nbsp;
@@ -588,13 +588,13 @@ export default function UserEdit({ targetUser }: Props) {
                     id="password"
                     type="password"
                     value={data.password}
-                    onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setData('password', e.target.value)}</span>
+                    onChange={(e) =&gt; setData('password', e.target.value)}
                     placeholder="Leave blank to keep current password"
                     className="block w-full rounded-lg border border-cream bg-ivory/50 px-4 py-3 text-charcoal placeholder:text-warm-gray-light focus:border-brass focus:ring-1 focus:ring-brass focus:outline-none transition-colors"
                     minLength={8}
                   /&gt;
                   {errors.password &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                    &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.password}&lt;/p&gt;</span>
+                    &lt;p className="mt-1.5 text-sm text-rose"&gt;{errors.password}&lt;/p&gt;
                   )}
                   &lt;p className="mt-1.5 text-xs text-warm-gray-light"&gt;
                     Must be at least 8 characters. Leave blank to keep your current password.
@@ -607,7 +607,7 @@ export default function UserEdit({ targetUser }: Props) {
                     disabled={processing}
                     className="bg-brass hover:bg-brass-light text-charcoal font-semibold py-3 px-8 rounded-lg disabled:opacity-50 transition-all hover:shadow-lg hover:shadow-brass/20 tracking-wide"
                   &gt;
-                    {processing ? <span class="branch-0 cbranch-no" title="branch not covered" >'Saving...' : '</span>Save Changes'}
+                    {processing ? 'Saving...' : 'Save Changes'}
                   &lt;/button&gt;
                   &lt;Link
                     href={`/users/${targetUser.id}`}
@@ -662,7 +662,7 @@ export default function UserEdit({ targetUser }: Props) {
               &lt;/h4&gt;
               &lt;div className="flex items-center gap-2 text-sm"&gt;
                 &lt;svg
-                  className={`w-4 h-4 ${data.password ? <span class="branch-0 cbranch-no" title="branch not covered" >'text-emerald' : '</span>text-warm-gray-light'}`}
+                  className={`w-4 h-4 ${data.password ? 'text-emerald' : 'text-warm-gray-light'}`}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -673,8 +673,8 @@ export default function UserEdit({ targetUser }: Props) {
                   &lt;rect x="3" y="11" width="18" height="11" rx="2" ry="2" /&gt;
                   &lt;path d="M7 11V7a5 5 0 0 1 10 0v4" /&gt;
                 &lt;/svg&gt;
-                &lt;span className={data.password ? <span class="branch-0 cbranch-no" title="branch not covered" >'text-emerald' : '</span>text-warm-gray-light'}&gt;
-                  {data.password ? <span class="branch-0 cbranch-no" title="branch not covered" >'Password will be updated' : '</span>Password unchanged'}
+                &lt;span className={data.password ? 'text-emerald' : 'text-warm-gray-light'}&gt;
+                  {data.password ? 'Password will be updated' : 'Password unchanged'}
                 &lt;/span&gt;
               &lt;/div&gt;
             &lt;/div&gt;
@@ -691,7 +691,7 @@ export default function UserEdit({ targetUser }: Props) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-24T13:10:04.057Z
+                at 2026-03-13T13:30:01.691Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

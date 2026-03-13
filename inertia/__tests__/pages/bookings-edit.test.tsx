@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
-import { mockUsePage } from '../setup'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, afterEach } from 'vitest'
+import { mockUsePage, mockUseFormOverrides } from '../setup'
 import BookingEdit from '~/pages/bookings/edit'
 
 const sampleBooking = {
@@ -115,5 +115,73 @@ describe('Booking Edit Page', () => {
     render(<BookingEdit booking={oneNightBooking} />)
     expect(screen.getByText('1')).toBeInTheDocument()
     expect(screen.getByText('night')).toBeInTheDocument()
+  })
+
+  afterEach(() => {
+    Object.keys(mockUseFormOverrides).forEach((k) => delete mockUseFormOverrides[k])
+  })
+
+  it('displays checkIn error when present', () => {
+    Object.assign(mockUseFormOverrides, { errors: { checkIn: 'Invalid check-in' } })
+    render(<BookingEdit booking={sampleBooking} />)
+    expect(screen.getByText('Invalid check-in')).toBeInTheDocument()
+  })
+
+  it('displays checkOut error when present', () => {
+    Object.assign(mockUseFormOverrides, { errors: { checkOut: 'Invalid check-out' } })
+    render(<BookingEdit booking={sampleBooking} />)
+    expect(screen.getByText('Invalid check-out')).toBeInTheDocument()
+  })
+
+  it('displays status error when present', () => {
+    Object.assign(mockUseFormOverrides, { errors: { status: 'Invalid status' } })
+    render(<BookingEdit booking={sampleBooking} />)
+    expect(screen.getByText('Invalid status')).toBeInTheDocument()
+  })
+
+  it('shows processing state on submit button', () => {
+    Object.assign(mockUseFormOverrides, { processing: true })
+    render(<BookingEdit booking={sampleBooking} />)
+    expect(screen.getByRole('button', { name: 'Saving...' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled()
+  })
+
+  it('calls put on form submit', () => {
+    const putMock = vi.fn()
+    Object.assign(mockUseFormOverrides, { put: putMock })
+    render(<BookingEdit booking={sampleBooking} />)
+    const form = screen.getByRole('button', { name: 'Save Changes' }).closest('form')!
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+    expect(putMock).toHaveBeenCalledWith('/bookings/1')
+  })
+
+  it('displays cancelled status badge in sidebar', () => {
+    const cancelledBooking = { ...sampleBooking, status: 'cancelled' }
+    render(<BookingEdit booking={cancelledBooking} />)
+    const status = screen.getByLabelText('Status') as HTMLSelectElement
+    expect(status.value).toBe('cancelled')
+  })
+
+  it('displays formatted dates in sidebar', () => {
+    render(<BookingEdit booking={sampleBooking} />)
+    expect(screen.getByText('Jun 1')).toBeInTheDocument()
+    expect(screen.getByText('Jun 5')).toBeInTheDocument()
+  })
+
+  it('triggers setData when changing form fields', () => {
+    const setDataMock = vi.fn()
+    Object.assign(mockUseFormOverrides, { setData: setDataMock })
+    render(<BookingEdit booking={sampleBooking} />)
+    fireEvent.change(screen.getByLabelText('Check In'), { target: { value: '2026-07-01' } })
+    expect(setDataMock).toHaveBeenCalledWith('checkIn', '2026-07-01')
+    fireEvent.change(screen.getByLabelText('Check Out'), { target: { value: '2026-07-05' } })
+    expect(setDataMock).toHaveBeenCalledWith('checkOut', '2026-07-05')
+    fireEvent.change(screen.getByLabelText('Status'), { target: { value: 'cancelled' } })
+    expect(setDataMock).toHaveBeenCalledWith('status', 'cancelled')
+  })
+
+  it('displays hotel location in sidebar', () => {
+    render(<BookingEdit booking={sampleBooking} />)
+    expect(screen.getByText('Paris')).toBeInTheDocument()
   })
 })

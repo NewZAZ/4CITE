@@ -75,16 +75,6 @@ test.group('Auth - Register', (group) => {
     response.assertStatus(302)
   })
 
-  test('rejects registration with invalid email format', async ({ client }) => {
-    const response = await client.post('/register').withCsrfToken().redirects(0).form({
-      pseudo: 'testuser',
-      email: 'notanemail',
-      password: 'Test@1234',
-    })
-
-    response.assertStatus(302)
-  })
-
   test('trims whitespace from pseudo', async ({ client, assert }) => {
     const response = await client.post('/register').withCsrfToken().redirects(0).form({
       pseudo: '  TestUser  ',

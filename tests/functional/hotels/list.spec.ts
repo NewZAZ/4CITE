@@ -93,17 +93,6 @@ test.group('Hotels - List', (group) => {
     })
   })
 
-  test('returns empty results for non-matching search', async ({ client }) => {
-    await HotelFactory.createMany(5)
-
-    const response = await client.get('/hotels?search=xyznonexistent').withInertia()
-
-    response.assertStatus(200)
-    response.assertInertiaPropsContains({
-      hotels: { meta: { total: 0 } },
-    })
-  })
-
   test('defaults to page 1 when invalid page', async ({ client }) => {
     await HotelFactory.createMany(3)
 

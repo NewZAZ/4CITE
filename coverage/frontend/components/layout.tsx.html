@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.03% </span>
+                <span class="strong">51.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/27</span>
+                <span class='fraction'>14/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.55% </span>
+                <span class="strong">97.67% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/43</span>
+                <span class='fraction'>42/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.78% </span>
+                <span class="strong">31.57% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/19</span>
+                <span class='fraction'>6/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.61% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/26</span>
+                <span class='fraction'>13/26</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -542,26 +542,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">147x</span>
-<span class="cline-any cline-yes">147x</span>
-<span class="cline-any cline-yes">147x</span>
-<span class="cline-any cline-yes">147x</span>
+<span class="cline-any cline-yes">273x</span>
+<span class="cline-any cline-yes">273x</span>
+<span class="cline-any cline-yes">273x</span>
+<span class="cline-any cline-yes">273x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">147x</span>
+<span class="cline-any cline-yes">273x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">147x</span>
-<span class="cline-any cline-yes">147x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">147x</span>
+<span class="cline-any cline-yes">249x</span>
+<span class="cline-any cline-yes">249x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">147x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">273x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">273x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -595,7 +593,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -610,7 +610,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1021,9 +1021,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   const dropdownRef = useRef&lt;HTMLDivElement&gt;(null)
 &nbsp;
   useEffect(() =&gt; {
-    function <span class="fstat-no" title="function not covered" >handleClickOutside(e</span>: MouseEvent) {
-<span class="cstat-no" title="statement not covered" >      if (dropdownRef.current &amp;&amp; !dropdownRef.current.contains(e.target as Node)) {</span>
-<span class="cstat-no" title="statement not covered" >        setDropdownOpen(false)</span>
+    function handleClickOutside(e: MouseEvent) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (dropdownRef.current &amp;&amp; !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -1068,12 +1068,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             &lt;div className="flex items-center"&gt;
               {/* Mobile menu button */}
               &lt;button
-                onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etMobileMenuOpen(!mobileMenuOpen)}</span>
+                onClick={() =&gt; setMobileMenuOpen(!mobileMenuOpen)}
                 className="sm:hidden p-2 rounded text-white/70 hover:text-white transition-colors mr-2"
               &gt;
                 &lt;svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"&gt;
                   {mobileMenuOpen ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;&gt;&lt;line x1="18" y1="6" x2="6" y2="18" /&gt;&lt;line x1="6" y1="6" x2="18" y2="18" /&gt;&lt;/&gt;</span>
+                    &lt;&gt;&lt;line x1="18" y1="6" x2="6" y2="18" /&gt;&lt;line x1="6" y1="6" x2="18" y2="18" /&gt;&lt;/&gt;
                   ) : (
                     &lt;&gt;&lt;line x1="3" y1="12" x2="21" y2="12" /&gt;&lt;line x1="3" y1="6" x2="21" y2="6" /&gt;&lt;line x1="3" y1="18" x2="21" y2="18" /&gt;&lt;/&gt;
                   )}
@@ -1083,7 +1083,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               {user ? (
                 &lt;div className="relative" ref={dropdownRef}&gt;
                   &lt;button
-                    onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etDropdownOpen(!dropdownOpen)}</span>
+                    onClick={() =&gt; setDropdownOpen(!dropdownOpen)}
                     className="flex items-center gap-2.5 p-1.5 rounded-full hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-brass focus:ring-offset-2 focus:ring-offset-charcoal"
                   &gt;
                     &lt;div className="w-8 h-8 rounded-full bg-brass text-charcoal flex items-center justify-center text-xs font-bold"&gt;
@@ -1093,7 +1093,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                       {user.pseudo}
                     &lt;/span&gt;
                     &lt;svg
-                      className={`w-4 h-4 text-white/50 transition-transform ${dropdownOpen ? <span class="branch-0 cbranch-no" title="branch not covered" >'rotate-180' : '</span>'}`}
+                      className={`w-4 h-4 text-white/50 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     &gt;
@@ -1106,7 +1106,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   &lt;/button&gt;
 &nbsp;
                   {dropdownOpen &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                    &lt;div className="absolute right-0 mt-2 w-64 sm:w-72 bg-white rounded-xl card-shadow border border-cream py-1 z-50"&gt;</span>
+                    &lt;div className="absolute right-0 mt-2 w-64 sm:w-72 bg-white rounded-xl card-shadow border border-cream py-1 z-50"&gt;
                       {/* User info header */}
                       &lt;div className="px-4 py-3 border-b border-cream"&gt;
                         &lt;div className="flex items-center gap-3"&gt;
@@ -1248,7 +1248,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 &nbsp;
         {/* Mobile menu */}
         {mobileMenuOpen &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >          &lt;div className="sm:hidden border-t border-white/10 px-4 py-3 space-y-1"&gt;</span>
+          &lt;div className="sm:hidden border-t border-white/10 px-4 py-3 space-y-1"&gt;
             &lt;Link
               href="/hotels"
               className="block text-white/70 hover:text-white px-3 py-2.5 rounded text-sm font-medium"
@@ -1326,7 +1326,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 &nbsp;
       {/* Flash messages */}
       {flash &amp;&amp; Object.keys(flash).length &gt; 0 &amp;&amp; (
-<span class="branch-2 cbranch-no" title="branch not covered" >        &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4"&gt;</span>
+        &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4"&gt;
           {(flash as Record&lt;string, any&gt;).success &amp;&amp; (
             &lt;div className="bg-emerald-light border border-emerald/20 text-emerald px-4 py-3 rounded-lg text-sm font-medium"&gt;
               {(flash as Record&lt;string, any&gt;).success}
@@ -1489,7 +1489,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-24T13:10:04.057Z
+                at 2026-03-13T13:30:01.691Z
             </div>
         <script src="../prettify.js"></script>
         <script>

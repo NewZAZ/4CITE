@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { mockUsePage } from '../setup'
+import { mockUsePage, mockRouter } from '../setup'
 import HotelsIndex from '~/pages/hotels/index'
 
 const emptyHotels = {
@@ -85,5 +85,66 @@ describe('Hotels Index Page', () => {
     expect(screen.getByText(/Name/)).toBeInTheDocument()
     expect(screen.getByText(/Location/)).toBeInTheDocument()
     expect(screen.getByText(/Date/)).toBeInTheDocument()
+  })
+
+  it('submits search form', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    render(<HotelsIndex hotels={sampleHotels} filters={defaultFilters} />)
+    const searchInput = screen.getByPlaceholderText('Search by name or location...')
+    fireEvent.change(searchInput, { target: { value: 'Paris' } })
+    const searchButton = screen.getByRole('button', { name: 'Search' })
+    fireEvent.click(searchButton)
+    expect(mockRouter.get).toHaveBeenCalledWith(
+      '/hotels',
+      { search: 'Paris', sort: '', order: '' },
+      { preserveState: true }
+    )
+  })
+
+  it('clicking sort button calls router.get', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    render(<HotelsIndex hotels={sampleHotels} filters={defaultFilters} />)
+    const nameSort = screen.getByRole('button', { name: /Name/ })
+    fireEvent.click(nameSort)
+    expect(mockRouter.get).toHaveBeenCalledWith(
+      '/hotels',
+      { sort: 'name', order: 'asc', search: '' },
+      { preserveState: true }
+    )
+  })
+
+  it('toggles sort order when clicking same column', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    const sortedFilters = { sort: 'name', order: 'asc', search: '', limit: 10 }
+    render(<HotelsIndex hotels={sampleHotels} filters={sortedFilters} />)
+    const nameSort = screen.getByRole('button', { name: /Name/ })
+    fireEvent.click(nameSort)
+    expect(mockRouter.get).toHaveBeenCalledWith(
+      '/hotels',
+      { sort: 'name', order: 'desc', search: '' },
+      { preserveState: true }
+    )
+  })
+
+  it('renders hotel with picture', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    const hotelsWithPics = {
+      ...sampleHotels,
+      data: [
+        { ...sampleHotels.data[0], pictureList: ['https://example.com/img.jpg'] },
+        sampleHotels.data[1],
+      ],
+    }
+    render(<HotelsIndex hotels={hotelsWithPics} filters={defaultFilters} />)
+    const img = screen.getByAltText('Grand Hotel')
+    expect(img).toBeInTheDocument()
+  })
+
+  it('shows search message in empty state when searching', () => {
+    mockUsePage.mockReturnValue({ props: { user: null, flash: {} } })
+    render(
+      <HotelsIndex hotels={emptyHotels} filters={{ ...defaultFilters, search: 'nonexistent' }} />
+    )
+    expect(screen.getByText(/No results for "nonexistent"/)).toBeInTheDocument()
   })
 })

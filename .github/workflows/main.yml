@@ -57,6 +57,11 @@ jobs:
       - name: Run frontend tests
         run: npm run test:frontend
 
+      - name: Prepare database for e2e
+        run: |
+          node ace migration:run
+          node ace db:seed
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
