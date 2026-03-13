@@ -17,9 +17,14 @@ test.group('Users - Update', (group) => {
   test('user can update their own profile', async ({ client, assert }) => {
     const user = await UserFactory.create()
 
-    const response = await client.put(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(user).form({
-      pseudo: 'newpseudo',
-    })
+    const response = await client
+      .put(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        pseudo: 'newpseudo',
+      })
 
     response.assertStatus(302)
 
@@ -42,9 +47,14 @@ test.group('Users - Update', (group) => {
     const admin = await UserFactory.apply('admin').create()
     const user = await UserFactory.create()
 
-    const response = await client.put(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(admin).form({
-      pseudo: 'updatedByAdmin',
-    })
+    const response = await client
+      .put(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
+      .form({
+        pseudo: 'updatedByAdmin',
+      })
 
     response.assertStatus(302)
 
@@ -56,9 +66,14 @@ test.group('Users - Update', (group) => {
     const user1 = await UserFactory.create()
     const user2 = await UserFactory.create()
 
-    const response = await client.put(`/users/${user1.id}`).withCsrfToken().redirects(0).loginAs(user1).form({
-      email: user2.email,
-    })
+    const response = await client
+      .put(`/users/${user1.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user1)
+      .form({
+        email: user2.email,
+      })
 
     response.assertStatus(302)
   })
@@ -76,9 +91,14 @@ test.group('Users - Update', (group) => {
   test('rejects update with invalid email format', async ({ client }) => {
     const user = await UserFactory.create()
 
-    const response = await client.put(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(user).form({
-      email: 'notvalid',
-    })
+    const response = await client
+      .put(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        email: 'notvalid',
+      })
 
     response.assertStatus(302)
   })
@@ -89,9 +109,14 @@ test.group('Users - Update', (group) => {
       email: 'original@test.com',
     }).create()
 
-    const response = await client.put(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(user).form({
-      password: 'NewPassword@123',
-    })
+    const response = await client
+      .put(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        password: 'NewPassword@123',
+      })
 
     response.assertStatus(302)
 

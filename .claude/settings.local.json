@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(cd \"C:/Users/benti/Documents/Développement/Workspace/4CITE\" && rm -rf node_modules/.vite && npx vitest run inertia/__tests__/pages/bookings-index.test.tsx 2>&1)",
+      "Bash(cd \"C:/Users/benti/Documents/Développement/Workspace/4CITE\" && npx vitest run --reporter=verbose 2>&1)",
+      "Bash(tail:*)"
+    ]
+  }
+}

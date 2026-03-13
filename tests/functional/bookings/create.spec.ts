@@ -24,11 +24,16 @@ test.group('Bookings - Create', (group) => {
     const checkIn = DateTime.now().plus({ days: 10 }).toFormat('yyyy-MM-dd')
     const checkOut = DateTime.now().plus({ days: 15 }).toFormat('yyyy-MM-dd')
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({
-      hotelId: hotel.id,
-      checkIn,
-      checkOut,
-    })
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        hotelId: hotel.id,
+        checkIn,
+        checkOut,
+      })
 
     response.assertStatus(302)
 
@@ -42,11 +47,16 @@ test.group('Bookings - Create', (group) => {
     const user = await UserFactory.create()
     const hotel = await HotelFactory.create()
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({
-      hotelId: hotel.id,
-      checkIn: '2020-01-01',
-      checkOut: '2020-01-05',
-    })
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        hotelId: hotel.id,
+        checkIn: '2020-01-01',
+        checkOut: '2020-01-05',
+      })
 
     response.assertStatus(302)
   })
@@ -58,11 +68,16 @@ test.group('Bookings - Create', (group) => {
     const checkIn = DateTime.now().plus({ days: 15 }).toFormat('yyyy-MM-dd')
     const checkOut = DateTime.now().plus({ days: 10 }).toFormat('yyyy-MM-dd')
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({
-      hotelId: hotel.id,
-      checkIn,
-      checkOut,
-    })
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        hotelId: hotel.id,
+        checkIn,
+        checkOut,
+      })
 
     response.assertStatus(302)
   })
@@ -73,11 +88,16 @@ test.group('Bookings - Create', (group) => {
     const checkIn = DateTime.now().plus({ days: 10 }).toFormat('yyyy-MM-dd')
     const checkOut = DateTime.now().plus({ days: 15 }).toFormat('yyyy-MM-dd')
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({
-      hotelId: 99999,
-      checkIn,
-      checkOut,
-    })
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        hotelId: 99999,
+        checkIn,
+        checkOut,
+      })
 
     response.assertStatus(404)
   })
@@ -97,7 +117,12 @@ test.group('Bookings - Create', (group) => {
   test('cannot create booking with missing fields', async ({ client }) => {
     const user = await UserFactory.create()
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({})
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({})
 
     response.assertStatus(302)
   })
@@ -108,10 +133,15 @@ test.group('Bookings - Create', (group) => {
     const checkIn = DateTime.now().plus({ days: 10 }).toFormat('yyyy-MM-dd')
     const checkOut = DateTime.now().plus({ days: 15 }).toFormat('yyyy-MM-dd')
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({
-      checkIn,
-      checkOut,
-    })
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        checkIn,
+        checkOut,
+      })
 
     response.assertStatus(302)
   })
@@ -122,11 +152,16 @@ test.group('Bookings - Create', (group) => {
 
     const sameDate = DateTime.now().plus({ days: 10 }).toFormat('yyyy-MM-dd')
 
-    const response = await client.post('/bookings').withCsrfToken().redirects(0).loginAs(user).form({
-      hotelId: hotel.id,
-      checkIn: sameDate,
-      checkOut: sameDate,
-    })
+    const response = await client
+      .post('/bookings')
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
+      .form({
+        hotelId: hotel.id,
+        checkIn: sameDate,
+        checkOut: sameDate,
+      })
 
     response.assertStatus(302)
   })

@@ -10,8 +10,22 @@ const emptyHotels = {
 
 const sampleHotels = {
   data: [
-    { id: 1, name: 'Grand Hotel', location: 'Paris', description: 'A nice hotel', pictureList: null, createdAt: '2025-01-01' },
-    { id: 2, name: 'Beach Resort', location: 'Nice', description: 'By the sea', pictureList: null, createdAt: '2025-01-02' },
+    {
+      id: 1,
+      name: 'Grand Hotel',
+      location: 'Paris',
+      description: 'A nice hotel',
+      pictureList: null,
+      createdAt: '2025-01-01',
+    },
+    {
+      id: 2,
+      name: 'Beach Resort',
+      location: 'Nice',
+      description: 'By the sea',
+      pictureList: null,
+      createdAt: '2025-01-02',
+    },
   ],
   meta: { total: 2, perPage: 10, currentPage: 1, lastPage: 1, firstPage: 1 },
 }
@@ -40,7 +54,10 @@ describe('Hotels Index Page', () => {
 
   it('shows Add Hotel button for admin', () => {
     mockUsePage.mockReturnValue({
-      props: { user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' }, flash: {} },
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
     })
     render(<HotelsIndex hotels={sampleHotels} filters={defaultFilters} />)
     const addHotelLinks = screen.getAllByText('Add Hotel')

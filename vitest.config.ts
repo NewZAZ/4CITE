@@ -14,5 +14,12 @@ export default defineConfig({
     globals: true,
     setupFiles: ['inertia/__tests__/setup.tsx'],
     include: ['inertia/__tests__/**/*.test.tsx'],
+    coverage: {
+      provider: 'v8',
+      include: ['inertia/pages/**/*.tsx', 'inertia/components/**/*.tsx'],
+      exclude: ['inertia/app/**', 'inertia/__tests__/**'],
+      reporter: ['text', 'text-summary', 'html'],
+      reportsDirectory: './coverage/frontend',
+    },
   },
 })

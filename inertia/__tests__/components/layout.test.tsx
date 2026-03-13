@@ -136,8 +136,6 @@ describe('Layout Component', () => {
         <div>Content</div>
       </Layout>
     )
-    expect(
-      screen.getByText(/Akkor Hotel Ltd\. All rights reserved/)
-    ).toBeInTheDocument()
+    expect(screen.getByText(/Akkor Hotel Ltd\. All rights reserved/)).toBeInTheDocument()
   })
 })

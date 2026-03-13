@@ -20,9 +20,14 @@ test.group('Hotels - Update', (group) => {
     const admin = await UserFactory.apply('admin').create()
     const hotel = await HotelFactory.create()
 
-    const response = await client.put(`/hotels/${hotel.id}`).withCsrfToken().redirects(0).loginAs(admin).form({
-      name: 'Updated Hotel Name',
-    })
+    const response = await client
+      .put(`/hotels/${hotel.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
+      .form({
+        name: 'Updated Hotel Name',
+      })
 
     response.assertStatus(302)
 
@@ -59,9 +64,14 @@ test.group('Hotels - Update', (group) => {
     }).create()
     const originalLocation = hotel.location
 
-    const response = await client.put(`/hotels/${hotel.id}`).withCsrfToken().redirects(0).loginAs(admin).form({
-      name: 'Updated Name Only',
-    })
+    const response = await client
+      .put(`/hotels/${hotel.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
+      .form({
+        name: 'Updated Name Only',
+      })
 
     response.assertStatus(302)
 

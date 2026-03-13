@@ -4,7 +4,7 @@ import { loginAsAdmin } from './helpers.js'
 test.describe('Authentication', () => {
   test('can view login page', async ({ page }) => {
     await page.goto('/login')
-    await expect(page.locator('h1')).toHaveText('Login')
+    await expect(page.locator('h1')).toHaveText('Welcome back')
     await expect(page.locator('input[id="email"]')).toBeVisible()
     await expect(page.locator('input[id="password"]')).toBeVisible()
   })

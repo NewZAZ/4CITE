@@ -13,7 +13,11 @@ test.group('Hotels - Delete', (group) => {
     const admin = await UserFactory.apply('admin').create()
     const hotel = await HotelFactory.create()
 
-    const response = await client.delete(`/hotels/${hotel.id}`).withCsrfToken().redirects(0).loginAs(admin)
+    const response = await client
+      .delete(`/hotels/${hotel.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
 
     response.assertStatus(302)
 
@@ -53,7 +57,11 @@ test.group('Hotels - Delete', (group) => {
     const hotel = await HotelFactory.create()
     const booking = await BookingFactory.merge({ userId: user.id, hotelId: hotel.id }).create()
 
-    const response = await client.delete(`/hotels/${hotel.id}`).withCsrfToken().redirects(0).loginAs(admin)
+    const response = await client
+      .delete(`/hotels/${hotel.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
 
     response.assertStatus(302)
 

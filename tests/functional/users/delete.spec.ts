@@ -12,7 +12,11 @@ test.group('Users - Delete', (group) => {
   test('user can delete their own account', async ({ client, assert }) => {
     const user = await UserFactory.create()
 
-    const response = await client.delete(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(user)
+    const response = await client
+      .delete(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(user)
 
     response.assertStatus(302)
 
@@ -33,7 +37,11 @@ test.group('Users - Delete', (group) => {
     const admin = await UserFactory.apply('admin').create()
     const user = await UserFactory.create()
 
-    const response = await client.delete(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(admin)
+    const response = await client
+      .delete(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
 
     response.assertStatus(302)
 
@@ -56,7 +64,11 @@ test.group('Users - Delete', (group) => {
     const booking1 = await BookingFactory.merge({ userId: user.id, hotelId: hotel.id }).create()
     const booking2 = await BookingFactory.merge({ userId: user.id, hotelId: hotel.id }).create()
 
-    const response = await client.delete(`/users/${user.id}`).withCsrfToken().redirects(0).loginAs(admin)
+    const response = await client
+      .delete(`/users/${user.id}`)
+      .withCsrfToken()
+      .redirects(0)
+      .loginAs(admin)
 
     response.assertStatus(302)
 

@@ -29,9 +29,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     // Pseudo should be in a heading
     expect(screen.getByRole('heading', { name: /TestUser/ })).toBeInTheDocument()
   })
@@ -43,9 +41,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     expect(screen.getByText('test@test.com')).toBeInTheDocument()
   })
 
@@ -56,9 +52,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     const editLinks = screen.getAllByText('Edit Profile')
     expect(editLinks.length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText('Delete')).toBeInTheDocument()
@@ -71,9 +65,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     expect(screen.queryByText('Edit Profile')).not.toBeInTheDocument()
     expect(screen.queryByText('Delete')).not.toBeInTheDocument()
   })
@@ -85,9 +77,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     expect(screen.getByText('Edit Profile')).toBeInTheDocument()
   })
 
@@ -98,9 +88,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={5} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={5} />)
     expect(screen.getByText('5')).toBeInTheDocument()
     expect(screen.getByText('Total bookings')).toBeInTheDocument()
   })
@@ -112,9 +100,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     expect(screen.getByText('Recent Bookings')).toBeInTheDocument()
     expect(screen.getByText('Grand Hotel')).toBeInTheDocument()
   })
@@ -126,9 +112,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     expect(screen.getByText('New Booking')).toBeInTheDocument()
     expect(screen.getByText('View All Bookings')).toBeInTheDocument()
   })
@@ -140,9 +124,7 @@ describe('User Show Page', () => {
         flash: {},
       },
     })
-    render(
-      <UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />
-    )
+    render(<UserShow targetUser={targetUser} recentBookings={recentBookings} totalBookings={1} />)
     // "TE" from TestUser initials - may appear in both layout avatar and profile avatar
     const initials = screen.getAllByText('TE')
     expect(initials.length).toBeGreaterThanOrEqual(1)

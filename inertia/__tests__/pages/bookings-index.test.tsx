@@ -41,7 +41,10 @@ describe('Bookings Index Page', () => {
 
   it('renders All Bookings heading for admin', () => {
     mockUsePage.mockReturnValue({
-      props: { user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' }, flash: {} },
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
     })
     render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
     expect(screen.getByRole('heading', { name: 'All Bookings' })).toBeInTheDocument()
@@ -49,10 +52,15 @@ describe('Bookings Index Page', () => {
 
   it('shows search bar for admin', () => {
     mockUsePage.mockReturnValue({
-      props: { user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' }, flash: {} },
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
     })
     render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
-    expect(screen.getByPlaceholderText('Search by booking ID, user name or email...')).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText('Search by booking ID, user name or email...')
+    ).toBeInTheDocument()
   })
 
   it('hides search bar for regular user', () => {
@@ -60,12 +68,17 @@ describe('Bookings Index Page', () => {
       props: { user: { id: 1, pseudo: 'User', email: 'user@test.com', role: 'user' }, flash: {} },
     })
     render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
-    expect(screen.queryByPlaceholderText('Search by booking ID, user name or email...')).not.toBeInTheDocument()
+    expect(
+      screen.queryByPlaceholderText('Search by booking ID, user name or email...')
+    ).not.toBeInTheDocument()
   })
 
   it('shows Guest column for admin', () => {
     mockUsePage.mockReturnValue({
-      props: { user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' }, flash: {} },
+      props: {
+        user: { id: 1, pseudo: 'Admin', email: 'admin@test.com', role: 'admin' },
+        flash: {},
+      },
     })
     render(<BookingsIndex bookings={sampleBookings} filters={{ search: '' }} />)
     // The column header is "Guest" in the current design
